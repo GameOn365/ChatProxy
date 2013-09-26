@@ -1,0 +1,5 @@
+name: BungeeChatClient
+version: 0.2
+author: KoolKrafter
+main: com.jumanjicraft.BungeeChatClient.BungeeChatClient
+depend: [Herochat]
