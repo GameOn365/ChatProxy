@@ -6,7 +6,6 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
@@ -40,28 +39,14 @@ public class BungeeChatListener implements PluginMessageListener {
 		ByteArrayDataInput in = ByteStreams.newDataInput(bytes);
 		String chatchannel = in.readUTF();
 		String message = in.readUTF();
-		message = ChatColor.translateAlternateColorCodes('&', message);
 		Channel channel = Herochat.getChannelManager().getChannel(chatchannel);
 		if (channel == null) {
-			Bukkit.getLogger()
-					.warning(
-							"Channel "
-									+ chatchannel
-									+ " doesn't exist, but a message was receieved on it. Your Herochat configs aren't probably the same on each server.");
+			Bukkit.getLogger().warning(
+				"Channel " + chatchannel + " doesn't exist, but a message was receieved on it." +
+				"Your Herochat configs are probably not the same on each server.");
 			return;
 		}
-		
-		StringBuilder msg = new StringBuilder(channel.applyFormat(
-				channel.getFormatSupplier().getAnnounceFormat(), "").replace(
-				"%2$s", message.replaceAll("(?i)&([a-fklmno0-9])", "§$1")));
-		
-		if (channel.getFormat().startsWith("[")) {
-			msg.deleteCharAt(2);
-			channel.sendRawMessage(ChatColor.GREEN + "[N" + ChatColor.RESET
-					+ msg);
-		} else {
-			channel.sendRawMessage(ChatColor.GREEN + "[N]" + ChatColor.RESET
-					+ msg);
-		}
+				
+		channel.sendRawMessage(message);
 	}
 }
