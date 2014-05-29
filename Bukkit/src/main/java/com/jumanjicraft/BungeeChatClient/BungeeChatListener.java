@@ -5,7 +5,9 @@ import com.dthielke.herochat.Herochat;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import java.util.logging.Level;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
@@ -41,12 +43,10 @@ public class BungeeChatListener implements PluginMessageListener {
 		String message = in.readUTF();
 		Channel channel = Herochat.getChannelManager().getChannel(chatchannel);
 		if (channel == null) {
-			Bukkit.getLogger().warning(
-				"Channel " + chatchannel + " doesn't exist, but a message was receieved on it." +
-				"Your Herochat configs are probably not the same on each server.");
+			Bukkit.getLogger().log(Level.WARNING,"Channel {0} doesn't exist, but a message was receieved on it.  Your Herochat configs are probably not the same on each server.", chatchannel);
 			return;
 		}
-				
-		channel.sendRawMessage(message);
+		
+		channel.sendRawMessage(ChatColor.DARK_GRAY + "<> " + ChatColor.RESET + message);
 	}
 }
